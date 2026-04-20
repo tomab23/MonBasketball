@@ -13,7 +13,7 @@ const AuthPage = () => {
           <img src={icon} alt="" />
           <Button className="mt-2" onClick={() => navigate("/home")}>GO HOME!</Button>
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
+        <div className="font-mono text-xs text-muted-foreground max-sm:hidden">
           (Press <kbd>d</kbd> to toggle dark mode)
         </div>
       </div>
