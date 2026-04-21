@@ -8,6 +8,8 @@ const HomePage = () => {
       HOME PAGE
       <br />
       <Button onClick={() => navigate("/4")}>404</Button>
+      <Button onClick={() => navigate("/dashboard")}>Dashboard test</Button>
+      <Button onClick={() => navigate("/form")}>Session form test</Button>
     </div>
   )
 }
