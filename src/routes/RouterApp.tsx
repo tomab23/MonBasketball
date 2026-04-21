@@ -1,5 +1,6 @@
 import LayoutWithNavbar from "@/components/layout/LayoutWithNavbar"
 import AuthPage from "@/pages/AuthPage"
+import Dashboard from "@/pages/Dashboard"
 import DiaryPage from "@/pages/DiaryPage"
 import HomePage from "@/pages/HomePage"
 import NotFoundPage from "@/pages/NotFoundPage"
@@ -21,11 +22,15 @@ const RouterApp = () => {
       <Route element={<LayoutWithNavbar />}>
         <Route path="/home" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/form" element={<SessionFormPage />} />
         <Route path="/session" element={<SessionPage />} />
         <Route path="/diary" element={<DiaryPage />} />
         <Route path="/stats" element={<StatsPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Route>
+      <Route path="/form" element={<SessionFormPage />} />
+
+      {/* TEST */}
+      
     </Routes>
   )
 }

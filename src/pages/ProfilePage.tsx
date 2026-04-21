@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 
@@ -18,6 +19,8 @@ const ProfilePage = () => {
 
       <br />
       -adress mail / Toggle dark mode
+      <br />
+      <ModeToggle />
     </div>
   )
 }
