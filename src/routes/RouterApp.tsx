@@ -9,6 +9,7 @@ import SessionFormPage from "@/pages/SessionFormPage"
 import SessionPage from "@/pages/SessionPage"
 import StatsPage from "@/pages/StatsPage"
 import { Route, Routes, useLocation } from "react-router-dom"
+import PrivateRoute from "./PrivateRoute"
 
 const RouterApp = () => {
   const location = useLocation()
@@ -20,14 +21,14 @@ const RouterApp = () => {
 
       {/* PRIVATE */}
       <Route element={<LayoutWithNavbar />}>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/session" element={<SessionPage />} />
-        <Route path="/diary" element={<DiaryPage />} />
-        <Route path="/stats" element={<StatsPage />} />
+        <Route path="/home" element={<PrivateRoute><HomePage /></PrivateRoute>} />
+        <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+        <Route path="/session" element={<PrivateRoute><SessionPage /></PrivateRoute>} />
+        <Route path="/diary" element={<PrivateRoute><DiaryPage /></PrivateRoute>} />
+        <Route path="/stats" element={<PrivateRoute><StatsPage /></PrivateRoute>} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
-      <Route path="/form" element={<SessionFormPage />} />
+      <Route path="/form" element={<PrivateRoute><SessionFormPage /></PrivateRoute>} />
 
       {/* TEST */}
       

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import icon from "/panier.png"
 import {
   Card,
@@ -10,29 +10,56 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
 import { BasketballIcon } from "@/assets/BasketballIcon"
+import { useAuth } from "@/context/AuthContext"
+import { useFormik } from "formik"
+import { ValidAuthSchema, type AuthFormValues } from "@/schemas/AuthSchema"
+import { useState } from "react"
 
 // type Props = {
 //   register: boolean
 // }
 
 const AuthPage = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
+  const { login, user, loading } = useAuth();
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [load, setLoad] = useState(false)
+  // const [error, setError] = useState("")
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    // console.log({ email, password })
-    setTimeout(() => {
-      setLoading(false)
-      navigate("/home")
-    }, 1000)
-  }
+    const handleLogin = async (email: string, password: string) => {
+    // setError("");
+    setLoad(true);
+    const { error } = await login(email, password);
+    // if (error) setError(error);
+    if (error) console.log(error);
+    if (error) setLoad(false);
+    else
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 1000);
+  };
+
+  const formik = useFormik<AuthFormValues>({
+    initialValues: {
+      email: "",
+      password: "",
+
+    },
+    enableReinitialize: true,
+    validationSchema: ValidAuthSchema,
+    onSubmit: (values) => {
+      handleLogin(values.email, values.password);
+    },
+  })
+
+if (loading) {
+  return null; // ou un spinner
+}
+
+if (user) {
+  return <Navigate to="/home" replace />;
+}
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background via-background to-primary/40">
@@ -54,14 +81,16 @@ const AuthPage = () => {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label>Email</Label>
               <Input
                 type="email"
+                name="email"
+                id="email"
                 placeholder="player@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formik.values.email}
+                onChange={formik.handleChange}
                 className="border-zinc-700 focus:border-orange-500"
               />
             </div>
@@ -70,9 +99,11 @@ const AuthPage = () => {
               <Label>Mot de passe</Label>
               <Input
                 type="password"
+                name="password"
+                id="password"
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formik.values.password}
+                onChange={formik.handleChange}
                 className="border-zinc-700 focus:border-orange-500"
               />
             </div>
@@ -81,7 +112,7 @@ const AuthPage = () => {
               type="submit"
               className="w-full bg-primary font-semibold text-white hover:bg-primary/90"
             >
-              {loading ? (
+              {load ? (
                 <>
                   <BasketballIcon className="h-5 w-5 animate-spin" />
                   Connexion...
