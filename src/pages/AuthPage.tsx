@@ -34,10 +34,6 @@ const AuthPage = () => {
     // if (error) setError(error);
     if (error) console.log(error);
     if (error) setLoad(false);
-    else
-      setTimeout(() => {
-        window.location.href = "/home";
-      }, 1000);
   };
 
   const formik = useFormik<AuthFormValues>({
