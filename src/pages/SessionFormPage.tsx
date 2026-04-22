@@ -53,8 +53,8 @@ export default function SessionFormPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md border-zinc-800 dark:bg-zinc-900/80 shadow-xl">
-        <CardHeader className="space-y-2 text-center">
+      <Card className="w-full max-w-md border-zinc-800 shadow-xl dark:bg-zinc-900/80">
+        <CardHeader className="space-y-1 text-center">
           <Button
             variant={"ghost"}
             className={"-mb-5 w-fit"}
@@ -64,12 +64,10 @@ export default function SessionFormPage() {
             Retour
           </Button>
           <div className="flex justify-center">
-            <BasketballIcon className="h-10 w-10 dark:text-orange-500 text-primary" />
+            <BasketballIcon className="h-10 w-10 text-primary dark:text-orange-500" />
           </div>
 
-          <CardTitle className="text-2xl">
-            Nouvelle Session
-          </CardTitle>
+          <CardTitle className="text-2xl">Nouvelle Session</CardTitle>
 
           <CardDescription>
             Ajoute ton entraînement ou ton match 🏀
@@ -80,22 +78,22 @@ export default function SessionFormPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* DATE - HEURE */}
             <div className="grid grid-cols-2 gap-2">
-                          <div className="space-y-2">
-              <Label>Date</Label>
-              <Input
-                type="date"
-                value={form.date}
-                onChange={(e) => update("date", e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Heure</Label>
-              <Input
-                type="time"
-                value={form.time}
-                onChange={(e) => update("time", e.target.value)}
-              />
-            </div>
+              <div className="space-y-2">
+                <Label>Date</Label>
+                <Input
+                  type="date"
+                  value={form.date}
+                  onChange={(e) => update("date", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Heure</Label>
+                <Input
+                  type="time"
+                  value={form.time}
+                  onChange={(e) => update("time", e.target.value)}
+                />
+              </div>
             </div>
 
             {/* DURATION */}
@@ -132,8 +130,8 @@ export default function SessionFormPage() {
                 <label
                   className={`flex w-full cursor-pointer gap-2 rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
                     form.type === "training"
-                      ? "border-orange-500 bg-orange-500/10 text-white"
-                      : "border-zinc-700 bg-zinc-800 text-zinc-300 hover:border-zinc-500"
+                      ? "border-orange-500 bg-orange-500/10"
+                      : "border-zinc-700 bg-muted hover:border-zinc-500 dark:bg-zinc-800"
                   }`}
                 >
                   <RadioGroupItem value="training" className="sr-only" />
@@ -145,8 +143,8 @@ export default function SessionFormPage() {
                 <label
                   className={`flex w-full cursor-pointer gap-2 rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
                     form.type === "match"
-                      ? "border-orange-500 bg-orange-500/10 text-white"
-                      : "border-zinc-700 bg-zinc-800 text-zinc-300 hover:border-zinc-500"
+                      ? "border-orange-500 bg-orange-500/10"
+                      : "border-zinc-700 bg-muted hover:border-zinc-500 dark:bg-zinc-800"
                   }`}
                 >
                   <RadioGroupItem value="match" className="sr-only" />
