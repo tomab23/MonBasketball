@@ -1,5 +1,4 @@
 import { useState } from "react"
-
 import {
   Card,
   CardContent,
@@ -7,62 +6,79 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-
 import { Textarea } from "@/components/ui/textarea"
 import { BasketballIcon } from "@/assets/BasketballIcon"
 import { useNavigate } from "react-router-dom"
-import { ArrowLeftIcon } from "lucide-react"
+import { ArrowLeftIcon, Eraser } from "lucide-react"
+import { useFormik } from "formik"
+import { formatDurationTime } from "@/helpers/FormatDurationTime"
+import { ValidSessionSchema, type SessionFormValues } from "@/schemas/SessionSchema"
+import { formatDate } from "@/helpers/FormatDate"
+
+// type Props = {
+//   edit: boolean;
+// };
+
 
 export default function SessionFormPage() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const [form, setForm] = useState({
-    date: "",
-    time: "",
-    duration: "",
-    location: "",
-    type: "",
-    note: "",
+  const today = formatDate(new Date())
+  
+
+  const formik = useFormik<SessionFormValues>({
+    initialValues: {
+      date: today,
+      time: "",
+      duration: 0,
+      location: "",
+      type: "training",
+      note: "",
+    },
+    enableReinitialize: true,
+    validationSchema: ValidSessionSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values));
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+        navigate("/home")
+      }, 1000)
+    },
   })
 
-  function update(field: string, value: string) {
-    setForm((f) => ({ ...f, [field]: value }))
-  }
+  //   console.log(formik.errors)
+  // console.log(formik.values)
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-
-    setLoading(true)
-
-    // simulation save
-    await new Promise((r) => setTimeout(r, 1500))
-
-    // console.log(form)
-
-    setLoading(false)
-
-    navigate("/home")
-  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md border-zinc-800 shadow-xl dark:bg-zinc-900/80">
         <CardHeader className="space-y-1 text-center">
-          <Button
-            variant={"ghost"}
-            className={"-mb-5 w-fit"}
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeftIcon />
-            Retour
-          </Button>
+          {/* HEADER */}
+          <div className="-mb-5 flex items-center justify-between">
+            <Button
+              variant={"ghost"}
+              className={"w-fit"}
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeftIcon />
+              Retour
+            </Button>
+            <Button
+              variant={"ghost"}
+              className={"w-fit"}
+              onClick={() => formik.resetForm()}
+            >
+              <Eraser />
+              Reset
+            </Button>
+          </div>
           <div className="flex justify-center">
             <BasketballIcon className="h-10 w-10 text-primary dark:text-orange-500" />
           </div>
@@ -75,45 +91,57 @@ export default function SessionFormPage() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
             {/* DATE - HEURE */}
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-2">
                 <Label>Date</Label>
                 <Input
                   type="date"
-                  value={form.date}
-                  onChange={(e) => update("date", e.target.value)}
+                  name="date"
+                  id="date"
+                  value={formik.values.date}
+                  onChange={formik.handleChange}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Heure</Label>
                 <Input
                   type="time"
-                  value={form.time}
-                  onChange={(e) => update("time", e.target.value)}
+                  name="time"
+                  id="time"
+                  value={formik.values.time}
+                  onChange={formik.handleChange}
                 />
               </div>
             </div>
 
             {/* DURATION */}
-            <div className="space-y-2">
-              <Label>Durée (minutes)</Label>
-              <Input
-                type="number"
-                placeholder="90"
-                value={form.duration}
-                onChange={(e) => update("duration", e.target.value)}
-              />
+            <div className="flex items-center">
+              <div className="space-y-2">
+                <Label>Durée (minutes)</Label>
+                <Input
+                  type="number"
+                  name="duration"
+                  id="duration"
+                  placeholder="90"
+                  value={formik.values.duration}
+                  onChange={formik.handleChange}
+                  className="max-sm:w-44"
+                />
+              </div>
+              <p className="mt-6 ml-4 font-bold">{formatDurationTime(formik.values.duration)}</p>
             </div>
 
             {/* LOCATION */}
             <div className="space-y-2">
               <Label>Lieu</Label>
               <Input
+                id="location"
+                name="location"
                 placeholder="Gymnase, playground..."
-                value={form.location}
-                onChange={(e) => update("location", e.target.value)}
+                value={formik.values.location}
+                onChange={formik.handleChange}
               />
             </div>
 
@@ -122,14 +150,14 @@ export default function SessionFormPage() {
               <Label>Type de session</Label>
 
               <RadioGroup
-                value={form.type}
-                onValueChange={(value) => update("type", value)}
+                value={formik.values.type}
+                onValueChange={(value) => formik.setFieldValue("type", value)}
                 className="grid grid-cols-2 gap-2"
               >
                 {/* ENTRAINEMENT */}
                 <label
-                  className={`flex w-full cursor-pointer gap-2 rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
-                    form.type === "training"
+                  className={`flex w-full cursor-pointer gap-2 max-sm:gap-1 items-center rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
+                    formik.values.type === "training"
                       ? "border-orange-500 bg-orange-500/10"
                       : "border-zinc-700 bg-muted hover:border-zinc-500 dark:bg-zinc-800"
                   }`}
@@ -141,8 +169,8 @@ export default function SessionFormPage() {
 
                 {/* MATCH */}
                 <label
-                  className={`flex w-full cursor-pointer gap-2 rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
-                    form.type === "match"
+                  className={`flex w-full cursor-pointer gap-2 max-sm:gap-1 items-center rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
+                    formik.values.type === "match"
                       ? "border-orange-500 bg-orange-500/10"
                       : "border-zinc-700 bg-muted hover:border-zinc-500 dark:bg-zinc-800"
                   }`}
@@ -158,9 +186,11 @@ export default function SessionFormPage() {
             <div className="space-y-2">
               <Label>Note (optionnel)</Label>
               <Textarea
+                id="note"
+                name="note"
                 placeholder="Sensations, stats, remarques..."
-                value={form.note}
-                onChange={(e) => update("note", e.target.value)}
+                value={formik.values.note}
+                onChange={formik.handleChange}
               />
             </div>
 

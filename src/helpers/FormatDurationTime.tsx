@@ -1,0 +1,1 @@
+export const formatDurationTime = (m: number) => `${Math.floor(m / 60)}h${m % 60}`
