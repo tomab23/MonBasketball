@@ -1,9 +1,14 @@
 import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext"
 
 const ProfilePage = () => {
-  const navigate = useNavigate()
+  const { logout, user } = useAuth();
+
+    const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className="contenu">
       <div className="flex items-center justify-between mt-2">
@@ -11,16 +16,17 @@ const ProfilePage = () => {
         <Button
           className="max-sm:text-xs"
           variant={"destructive"}
-          onClick={() => navigate("/")}
+          onClick={handleLogout}
         >
           Se déconnecter
         </Button>
       </div>
 
-      <br />
-      -adress mail / Toggle dark mode
-      <br />
-      <ModeToggle />
+      <div className="flex items-center gap-2 mt-2">
+        <p>{user?.email}</p>
+           <ModeToggle />
+      </div>
+   
     </div>
   )
 }
