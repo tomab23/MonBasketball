@@ -27,7 +27,7 @@ const AuthPage = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    console.log({ email, password })
+    // console.log({ email, password })
     setTimeout(() => {
       setLoading(false)
       navigate("/home")
@@ -91,7 +91,7 @@ const AuthPage = () => {
               )}
             </Button>
           </form>
-          <p className="mt-2 text-center text-xs text-muted-foreground">
+          <p className="font-mono text-xs text-muted-foreground max-sm:hidden mt-5 text-center">
             (Press <kbd>d</kbd> to toggle dark mode)
           </p>
         </CardContent>
