@@ -29,6 +29,7 @@ const RouterApp = () => {
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
       <Route path="/form" element={<PrivateRoute><SessionFormPage /></PrivateRoute>} />
+      <Route path="/form/:id" element={<PrivateRoute><SessionFormPage /></PrivateRoute>} />
 
       {/* TEST */}
       

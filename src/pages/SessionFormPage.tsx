@@ -12,24 +12,20 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { BasketballIcon } from "@/assets/BasketballIcon"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { ArrowLeftIcon, Eraser } from "lucide-react"
 import { useFormik } from "formik"
 import { formatDurationTime } from "@/helpers/FormatDurationTime"
 import { ValidSessionSchema, type SessionFormValues } from "@/schemas/SessionSchema"
 import { formatDate } from "@/helpers/FormatDate"
 
-// type Props = {
-//   edit: boolean;
-// };
-
 
 export default function SessionFormPage() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+   const { id } = useParams();
 
-  const today = formatDate(new Date())
-  
+  const today = formatDate(new Date())  
 
   const formik = useFormik<SessionFormValues>({
     initialValues: {
@@ -208,7 +204,7 @@ export default function SessionFormPage() {
                   Enregistrement...
                 </>
               ) : (
-                "Ajouter la session"
+                id ? "Modifier la session" : "Ajouter la session"
               )}
             </Button>
           </form>
