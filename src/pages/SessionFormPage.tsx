@@ -55,6 +55,8 @@ export default function SessionFormPage() {
   //   console.log(formik.errors)
   // console.log(formik.values)
 
+  // TODO add errors messages
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
