@@ -10,7 +10,7 @@ const DiaryPage = () => {
 
   return (
     <div className="contenu">
-      <p>DiaryPage</p>
+      <p>DiaryPage ({sessions.length})</p>
 
       <div>
         {sessions.map((session) => (
@@ -18,7 +18,7 @@ const DiaryPage = () => {
             <p>
               📅{session.date} - {session.type} -{" "}
               ⏱{formatDurationTime(session.duration)} - 📍{session.location} -{" "}
-              {session.id} - 🕐{formatTime(session.time)}
+               🕐{formatTime(session.time)}
             </p>
             <Button onClick={() => navigate(`/form/${session.id}`)}>edit</Button>
           </div>

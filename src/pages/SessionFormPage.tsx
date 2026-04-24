@@ -31,7 +31,7 @@ export default function SessionFormPage() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams()
-  const { fetchSessionById, error, addSession } = useSession()
+  const { fetchSessionById, error, addSession, editSession, removeSession } = useSession()
   const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
@@ -49,6 +49,11 @@ export default function SessionFormPage() {
     loadSession()
   }, [id, fetchSessionById])
 
+  const handleDelete = (id: string) => {
+    removeSession(id)
+    navigate(-1)
+  }
+
   const today = formatDate(new Date())
 
   const formik = useFormik<SessionFormValues>({
@@ -63,9 +68,19 @@ export default function SessionFormPage() {
     enableReinitialize: true,
     validationSchema: ValidSessionSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values))
+      // alert(JSON.stringify(values))
       if (!id) {
         addSession(
+          values.date,
+          values.time,
+          values.duration,
+          values.location,
+          values.type,
+          values.note ?? ""
+        )
+      } else {
+        editSession(
+          id,
           values.date,
           values.time,
           values.duration,
@@ -253,7 +268,7 @@ export default function SessionFormPage() {
             {/* SUBMIT */}
             {id ? (
               <div className="flex items-center justify-between">
-                <Button variant={"destructive"}><Trash2Icon /> Supprimer</Button>
+                <Button variant={"destructive"} type="button" onClick={() => handleDelete(id)}><Trash2Icon /> Supprimer</Button>
                 <Button
                   type="submit"
                   disabled={loading}

@@ -50,3 +50,23 @@ export const insertSession = async (
     .insert([{ user_id: userId, date, time, duration, location, type, note }]);
   if (error) throw new Error(error.message);
 };
+
+// 🔄 Modifier des informations d'une session par id
+export const updateSession = async (
+  id: string,
+  userId: string,
+  date: string,
+  time: string,
+  duration: number,
+  location: string,
+  type: string,
+  note: string
+) => {
+  const { error } = await supabase
+    .from("session")
+    .update({ date, time, duration, location, type, note })
+    .eq("id", id)
+    .eq("user_id", userId);
+  // if (error) throw new Error(error.message);
+    if (error) throw error;
+};

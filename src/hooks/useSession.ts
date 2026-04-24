@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import type Session from "@/models/Session"
-import { deleteSessionById, getSessionById, getSessions, insertSession } from "@/services/SessionService"
+import { deleteSessionById, getSessionById, getSessions, insertSession, updateSession } from "@/services/SessionService"
 import { parseSupabaseError, type ParsedError } from "@/utils/SupabaseError"
 
 export const useSession = () => {
@@ -48,7 +48,28 @@ const addSession = async (
   }
 
 //  mettre a jour une session
-
+  const editSession = useCallback(
+    async (id: string, 
+  date: string,
+  time: string,
+  duration: number,
+  location: string,
+  type: string,
+  note: string
+) => {
+      if (!user) return
+  setLoading(true)
+  try {
+    await updateSession(id,user.id, date, time, duration,location, type, note)
+    await fetchSessions()
+  } catch (err) {
+    setError(parseSupabaseError(err))
+  } finally {
+    setLoading(false)
+  }
+    },
+    [user, fetchSessions]
+  )
 
 //   supprimer une session
   const removeSession = async (id: string) => {
@@ -56,10 +77,6 @@ const addSession = async (
     await deleteSessionById(id, user.id)
     setSessions((prev) => prev.filter((c) => c.id !== id))
   }
-
-
-
-//   supprimer un user
 
 
 //   Récupérer une session par id
@@ -98,6 +115,7 @@ const fetchSessionById = useCallback(async (id: string): Promise<Session | null>
     fetchSessionById,
     removeSession,
     addSession,
+    editSession,
     error,
 
 
