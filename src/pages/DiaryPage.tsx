@@ -3,6 +3,7 @@ import { formatDurationTime } from "@/helpers/FormatDurationTime"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 import { formatTime } from "@/helpers/FormatTime"
+import { stringToDate } from "@/helpers/DateFormat"
 
 const DiaryPage = () => {
   const { sessions } = useSession();
@@ -16,7 +17,7 @@ const DiaryPage = () => {
         {sessions.map((session) => (
           <div key={session.id} className="flex items-center gap-2">
             <p>
-              📅{session.date} - {session.type} -{" "}
+              📅{stringToDate(session.date)} - {session.type === "match" ? "Match" : "Entraînement "} -{" "}
               ⏱{formatDurationTime(session.duration)} - 📍{session.location} -{" "}
                🕐{formatTime(session.time)}
             </p>
