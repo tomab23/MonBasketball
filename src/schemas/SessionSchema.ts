@@ -1,11 +1,9 @@
 import * as Yup from "yup"
 
 export const ValidSessionSchema = Yup.object({
-  date: Yup.string()
-    .required("La date est obligatoire"),
+  date: Yup.string().required("La date est obligatoire"),
 
-  time: Yup.string()
-    .required("L'heure est obligatoire"),
+  time: Yup.string().required("L'heure est obligatoire"),
 
   duration: Yup.number()
     .typeError("La durée doit être un nombre")
@@ -26,8 +24,8 @@ export const ValidSessionSchema = Yup.object({
 
   note: Yup.string()
     .max(500, "Maximum 500 caractères")
-    .nonNullable()
+    .nullable() // accepte null (venant de la BDD)
+    .default(""),
 })
 
-export type SessionFormValues =
-  Yup.InferType<typeof ValidSessionSchema>
+export type SessionFormValues = Yup.InferType<typeof ValidSessionSchema>

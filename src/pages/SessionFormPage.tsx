@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Card,
   CardContent,
@@ -13,46 +13,115 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { BasketballIcon } from "@/assets/BasketballIcon"
 import { useNavigate, useParams } from "react-router-dom"
-import { ArrowLeftIcon, Eraser } from "lucide-react"
+import { ArrowLeftIcon, Eraser, Trash2Icon } from "lucide-react"
 import { useFormik } from "formik"
 import { formatDurationTime } from "@/helpers/FormatDurationTime"
-import { ValidSessionSchema, type SessionFormValues } from "@/schemas/SessionSchema"
+import {
+  ValidSessionSchema,
+  type SessionFormValues,
+} from "@/schemas/SessionSchema"
 import { formatDate } from "@/helpers/FormatDate"
-
+import type Session from "@/models/Session"
+import { useSession } from "@/hooks/useSession"
+import { formatTime } from "@/helpers/FormatTime"
+import { BasketballLoader } from "@/components/loaders/BasketballLoader"
+import ErrorPage from "./errors/ErrorPage"
 
 export default function SessionFormPage() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-   const { id } = useParams();
+  const { id } = useParams()
+  const { fetchSessionById, error, addSession, editSession, removeSession } = useSession()
+  const [session, setSession] = useState<Session | null>(null)
 
-  const today = formatDate(new Date())  
+  useEffect(() => {
+    const loadSession = async () => {
+      if (id) setLoading(true)
+      if (!id) return
+      try {
+        const data = await fetchSessionById(id)
+        if (!data) return
+        setSession(data)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadSession()
+  }, [id, fetchSessionById])
+
+  const handleDelete = (id: string) => {
+    removeSession(id)
+    navigate(-1)
+  }
+
+  const today = formatDate(new Date())
 
   const formik = useFormik<SessionFormValues>({
     initialValues: {
-      date: today,
-      time: "",
-      duration: 0,
-      location: "",
-      type: "training",
-      note: "",
+      date: session?.date ?? today,
+      time: session ? formatTime(session.time) : "",
+      duration: session?.duration ?? 0,
+      location: session?.location ?? "",
+      type: (session?.type ?? "training") as "training" | "match",
+      note: session?.note ?? "",
     },
     enableReinitialize: true,
     validationSchema: ValidSessionSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-        navigate("/home")
-      }, 1000)
+      // alert(JSON.stringify(values))
+      if (!id) {
+        addSession(
+          values.date,
+          values.time,
+          values.duration,
+          values.location,
+          values.type,
+          values.note ?? ""
+        )
+      } else {
+        editSession(
+          id,
+          values.date,
+          values.time,
+          values.duration,
+          values.location,
+          values.type,
+          values.note ?? ""
+        )
+      }
+
+      if (!error) {
+        navigate(-1)
+      }
+      // setLoading(true)
+      // setTimeout(() => {
+      //   setLoading(false)
+      //   navigate("/home")
+      // }, 1000)
     },
   })
 
-  //   console.log(formik.errors)
+  // console.log(formik.errors)
   // console.log(formik.values)
 
   // TODO add errors messages
 
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <BasketballLoader isLoading={true} />
+      </div>
+    )
+  }
+
+  if (error)
+    return (
+      <ErrorPage
+        message={error.message}
+        code={error.code}
+        status={error.status}
+      />
+    )
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -81,10 +150,12 @@ export default function SessionFormPage() {
             <BasketballIcon className="h-10 w-10 text-primary dark:text-orange-500" />
           </div>
 
-          <CardTitle className="text-2xl">Nouvelle Session</CardTitle>
+          <CardTitle className="text-2xl">
+            {id ? "Modifier la session" : "Nouvelle Session"}
+          </CardTitle>
 
           <CardDescription>
-            Ajoute ton entraînement ou ton match 🏀
+            {id ? "Modifie" : "Ajoute"} ton entraînement ou ton match 🏀
           </CardDescription>
         </CardHeader>
 
@@ -128,7 +199,9 @@ export default function SessionFormPage() {
                   className="max-sm:w-44"
                 />
               </div>
-              <p className="mt-6 ml-4 font-bold">{formatDurationTime(formik.values.duration)}</p>
+              <p className="mt-6 ml-4 font-bold">
+                {formatDurationTime(formik.values.duration)}
+              </p>
             </div>
 
             {/* LOCATION */}
@@ -154,7 +227,7 @@ export default function SessionFormPage() {
               >
                 {/* ENTRAINEMENT */}
                 <label
-                  className={`flex w-full cursor-pointer gap-2 max-sm:gap-1 items-center rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
+                  className={`flex w-full cursor-pointer items-center gap-2 rounded-lg border py-2 text-sm leading-none font-medium transition-all max-sm:gap-1 ${
                     formik.values.type === "training"
                       ? "border-orange-500 bg-orange-500/10"
                       : "border-zinc-700 bg-muted hover:border-zinc-500 dark:bg-zinc-800"
@@ -167,7 +240,7 @@ export default function SessionFormPage() {
 
                 {/* MATCH */}
                 <label
-                  className={`flex w-full cursor-pointer gap-2 max-sm:gap-1 items-center rounded-lg border py-2 text-sm leading-none font-medium transition-all ${
+                  className={`flex w-full cursor-pointer items-center gap-2 rounded-lg border py-2 text-sm leading-none font-medium transition-all max-sm:gap-1 ${
                     formik.values.type === "match"
                       ? "border-orange-500 bg-orange-500/10"
                       : "border-zinc-700 bg-muted hover:border-zinc-500 dark:bg-zinc-800"
@@ -187,26 +260,48 @@ export default function SessionFormPage() {
                 id="note"
                 name="note"
                 placeholder="Sensations, stats, remarques..."
-                value={formik.values.note}
+                value={formik.values.note ?? ""}
                 onChange={formik.handleChange}
               />
             </div>
 
             {/* SUBMIT */}
-            <Button
-              type="submit"
-              disabled={loading}
-              className="flex w-full items-center justify-center gap-2 bg-primary hover:bg-primary/90"
-            >
-              {loading ? (
-                <>
-                  <BasketballIcon className="h-5 w-5 animate-spin" />
-                  Enregistrement...
-                </>
-              ) : (
-                id ? "Modifier la session" : "Ajouter la session"
-              )}
-            </Button>
+            {id ? (
+              <div className="flex items-center justify-between">
+                <Button variant={"destructive"} type="button" onClick={() => handleDelete(id)}><Trash2Icon /> Supprimer</Button>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="flex w-fit items-center justify-center gap-2 bg-primary hover:bg-primary/90"
+                >
+                  {loading ? (
+                    <>
+                      <BasketballIcon className="h-5 w-5 animate-spin" />
+                      Enregistrement...
+                    </>
+                  ) : id ? (
+                    "Modifier la session"
+                  ) : (
+                    "Ajouter la session"
+                  )}
+                </Button>
+              </div>
+            ) : (
+              <Button
+                type="submit"
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-2 bg-primary hover:bg-primary/90"
+              >
+                {loading ? (
+                  <>
+                    <BasketballIcon className="h-5 w-5 animate-spin" />
+                    Enregistrement...
+                  </>
+                ) : (
+                  "Ajouter la session"
+                )}
+              </Button>
+            )}
           </form>
         </CardContent>
       </Card>
