@@ -67,10 +67,10 @@ export default function SessionFormPage() {
     },
     enableReinitialize: true,
     validationSchema: ValidSessionSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       // alert(JSON.stringify(values))
       if (!id) {
-        addSession(
+        await addSession(
           values.date,
           values.time,
           values.duration,
@@ -79,7 +79,7 @@ export default function SessionFormPage() {
           values.note ?? ""
         )
       } else {
-        editSession(
+        await editSession(
           id,
           values.date,
           values.time,
@@ -89,7 +89,6 @@ export default function SessionFormPage() {
           values.note ?? ""
         )
       }
-
       if (!error) {
         navigate(-1)
       }
@@ -105,6 +104,8 @@ export default function SessionFormPage() {
   // console.log(formik.values)
 
   // TODO add errors messages
+
+  // TODO POPUP DELETE VALIDATION
 
   if (loading) {
     return (
