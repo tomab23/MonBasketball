@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext";
-import { stringToDate } from "@/helpers/DateFormat";
+import { stringToDate } from "@/helpers/StringToDate";
 import { useSession } from "@/hooks/useSession";
 import { useNavigate } from "react-router-dom"
 

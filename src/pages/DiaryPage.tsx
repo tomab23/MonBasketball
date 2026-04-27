@@ -3,7 +3,7 @@ import { formatDurationTime } from "@/helpers/FormatDurationTime"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 import { formatTime } from "@/helpers/FormatTime"
-import { stringToDate } from "@/helpers/DateFormat"
+import { stringToDate } from "@/helpers/StringToDate"
 
 const DiaryPage = () => {
   const { sessions } = useSession();
