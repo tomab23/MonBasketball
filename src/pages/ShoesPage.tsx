@@ -32,7 +32,7 @@ const ShoesPage = () => {
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-2 max-sm:grid-cols-1 gap-4">
+      <div className="mt-2 grid grid-cols-2 max-sm:grid-cols-1 gap-4 max-sm:gap-2">
         {shoes.map((shoes) => (
             <CardShoes shoes={shoes} key={shoes.id} />
         ))}

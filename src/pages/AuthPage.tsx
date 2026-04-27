@@ -66,7 +66,7 @@ if (user) {
         <CardHeader className="space-y-2 text-center">
           ⚠️ En développement ! ⚠️
           <div className="flex justify-center">
-            <img src={icon} alt="" className="h-20 w-20" />
+            <img src={icon} alt="Panier de basket icône par juicy_fish" className="h-20 w-20" title="icône par juicy_fish" />
           </div>
 
           <CardTitle className="font-boldd text-2xl">MonBasketball</CardTitle>
