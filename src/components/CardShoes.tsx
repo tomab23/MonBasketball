@@ -8,10 +8,10 @@ import { PenIcon } from "lucide-react"
 
 interface ShoeCardProps {
   shoes: Shoes
-  onSelect?: (shoe: Shoes) => void
+//   onSelect?: (shoe: Shoes) => void
 }
 
-export function CardShoes({ shoes, onSelect }: ShoeCardProps) {
+export function CardShoes({ shoes }: ShoeCardProps) {
   return (
     <Card className="flex-row items-center justify-between overflow-hidden border-neutral-800 py-3 pr-2 transition-colors duration-200 hover:border-amber-500 dark:bg-neutral-900">
       <div className="flex gap-2">
