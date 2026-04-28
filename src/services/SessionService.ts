@@ -43,11 +43,12 @@ export const insertSession = async (
   duration: number,
   location: string,
   type: string,
-  note: string
+  note: string,
+  shoes: string
 ) => {
   const { error } = await supabase
     .from("session")
-    .insert([{ user_id: userId, date, time, duration, location, type, note }]);
+    .insert([{ user_id: userId, date, time, duration, location, type, note, shoes }]);
   if (error) throw new Error(error.message);
 };
 
@@ -60,11 +61,12 @@ export const updateSession = async (
   duration: number,
   location: string,
   type: string,
-  note: string
+  note: string,
+  shoes: string
 ) => {
   const { error } = await supabase
     .from("session")
-    .update({ date, time, duration, location, type, note })
+    .update({ date, time, duration, location, type, note, shoes })
     .eq("id", id)
     .eq("user_id", userId);
   // if (error) throw new Error(error.message);

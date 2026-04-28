@@ -26,6 +26,8 @@ export const ValidSessionSchema = Yup.object({
     .max(500, "Maximum 500 caractères")
     .nullable() // accepte null (venant de la BDD)
     .default(""),
+  shoes: Yup.string()
+  .nullable()
 })
 
 export type SessionFormValues = Yup.InferType<typeof ValidSessionSchema>
