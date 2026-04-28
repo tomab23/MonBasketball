@@ -7,6 +7,7 @@ export default class Session {
   location: string
   type: string
   note: string | null
+  shoes: string | null
 
   constructor(
     id: string,
@@ -16,7 +17,8 @@ export default class Session {
     duration: number,
     location: string,
     type: string,
-    note: string | null
+    note: string | null,
+    shoes: string | null
   ) {
     this.id = id
     this.created_at = created_at
@@ -26,5 +28,6 @@ export default class Session {
     this.location = location
     this.type = type
     this.note = note
+    this.shoes = shoes
   }
 }

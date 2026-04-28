@@ -26,12 +26,24 @@ import { useSession } from "@/hooks/useSession"
 import { formatTime } from "@/helpers/FormatTime"
 import { BasketballLoader } from "@/components/loaders/BasketballLoader"
 import ErrorPage from "./errors/ErrorPage"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useShoes } from "@/hooks/useShoes"
 
 export default function SessionFormPage() {
   const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams()
-  const { fetchSessionById, error, addSession, editSession, removeSession } = useSession()
+  const { fetchSessionById, error, addSession, editSession, removeSession } =
+    useSession()
+  const { shoes = [] } = useShoes()
   const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
@@ -64,11 +76,13 @@ export default function SessionFormPage() {
       location: session?.location ?? "",
       type: (session?.type ?? "training") as "training" | "match",
       note: session?.note ?? "",
+      shoes: session?.shoes ?? "",
     },
     enableReinitialize: true,
     validationSchema: ValidSessionSchema,
     onSubmit: async (values) => {
       // alert(JSON.stringify(values))
+      setButtonLoading(true)
       if (!id) {
         await addSession(
           values.date,
@@ -76,7 +90,8 @@ export default function SessionFormPage() {
           values.duration,
           values.location,
           values.type,
-          values.note ?? ""
+          values.note ?? "",
+          values.shoes ?? ""
         )
       } else {
         await editSession(
@@ -86,9 +101,11 @@ export default function SessionFormPage() {
           values.duration,
           values.location,
           values.type,
-          values.note ?? ""
+          values.note ?? "",
+          values.shoes ?? ""
         )
       }
+      setButtonLoading(false)
       if (!error) {
         navigate(-1)
       }
@@ -204,6 +221,44 @@ export default function SessionFormPage() {
                 {formatDurationTime(formik.values.duration)}
               </p>
             </div>
+            {/* SHOES */}
+            <div className="space-y-2">
+              <div className="-mb-0.5 flex items-center justify-between">
+                <Label>Chaussures</Label>
+                <Button variant={"link"} onClick={() => alert("new paire")}>
+                  Ajouter une paire
+                </Button>
+              </div>
+              <Select
+                disabled={shoes.length === 0}
+                id="shoes"
+                name="shoes"
+                value={formik.values.shoes}
+                onValueChange={(value) => formik.setFieldValue("shoes", value)}
+                onOpenChange={(open) => {
+                  if (!open) formik.setFieldTouched("shoes", true)
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder={
+                      shoes.length > 0
+                        ? "Choisir une paire de chaussure"
+                        : "Ajouter une paire de chaussure"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {shoes.map((shoes) => (
+                      <SelectItem key={shoes.id} value={shoes.name}>
+                        {shoes.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
 
             {/* LOCATION */}
             <div className="space-y-2">
@@ -269,13 +324,19 @@ export default function SessionFormPage() {
             {/* SUBMIT */}
             {id ? (
               <div className="flex items-center justify-between">
-                <Button variant={"destructive"} type="button" onClick={() => handleDelete(id)}><Trash2Icon /> Supprimer</Button>
+                <Button
+                  variant={"destructive"}
+                  type="button"
+                  onClick={() => handleDelete(id)}
+                >
+                  <Trash2Icon /> Supprimer
+                </Button>
                 <Button
                   type="submit"
-                  disabled={loading}
+                  disabled={buttonLoading}
                   className="flex w-fit items-center justify-center gap-2 bg-primary hover:bg-primary/90"
                 >
-                  {loading ? (
+                  {buttonLoading ? (
                     <>
                       <BasketballIcon className="h-5 w-5 animate-spin" />
                       Enregistrement...
@@ -290,10 +351,10 @@ export default function SessionFormPage() {
             ) : (
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={buttonLoading}
                 className="flex w-full items-center justify-center gap-2 bg-primary hover:bg-primary/90"
               >
-                {loading ? (
+                {buttonLoading ? (
                   <>
                     <BasketballIcon className="h-5 w-5 animate-spin" />
                     Enregistrement...

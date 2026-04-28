@@ -33,12 +33,13 @@ const addSession = async (
   duration: number,
   location: string,
   type: string,
-  note: string
+  note: string,
+  shoes: string
   ) => { 
   if (!user) return
   setLoading(true)
   try {
-    await insertSession(user.id, date, time, duration,location, type, note)
+    await insertSession(user.id, date, time, duration,location, type, note, shoes)
     await fetchSessions()
   } catch (err) {
     setError(parseSupabaseError(err))
@@ -55,12 +56,13 @@ const addSession = async (
   duration: number,
   location: string,
   type: string,
-  note: string
+  note: string,
+  shoes: string
 ) => {
       if (!user) return
   setLoading(true)
   try {
-    await updateSession(id,user.id, date, time, duration,location, type, note)
+    await updateSession(id,user.id, date, time, duration,location, type, note, shoes)
     await fetchSessions()
   } catch (err) {
     setError(parseSupabaseError(err))
