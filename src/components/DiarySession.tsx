@@ -17,7 +17,7 @@ const DiarySession = ({ session }: Props) => {
     <div className="flex items-center justify-between gap-2 border-b-2 border-muted-foreground py-4">
       <div className="flex items-center gap-5 max-sm:text-xs">
         <p>
-          📅{stringToDate(session.date)} - 🕐{formatTime(session.time).replace(":", "h")} -{" "}
+          📅<b>{stringToDate(session.date)}</b> - 🕐{formatTime(session.time).replace(":", "h")} -{" "}
           {session.type === "match" ? "Match" : "Entraînement "} -📍
           {session.location} - ⏱{formatDurationTime(session.duration)} {" "}
           {session.shoes && "- 👟"}{session.shoes}
