@@ -1,11 +1,9 @@
 import { useSession } from "@/hooks/useSession"
-import { formatDurationTime } from "@/helpers/FormatDurationTime"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
-import { formatTime } from "@/helpers/FormatTime"
-import { stringToDate } from "@/helpers/StringToDate"
 import Header from "@/components/layout/Header"
 import { PlusCircle } from "lucide-react"
+import DiarySession from "@/components/DiarySession"
 
 const DiaryPage = () => {
   const { sessions } = useSession();
@@ -25,14 +23,7 @@ const DiaryPage = () => {
 
       <div className="mt-10">
         {sessions.map((session) => (
-          <div key={session.id} className="flex items-center gap-2">
-            <p>
-              📅{stringToDate(session.date)} - {session.type === "match" ? "Match" : "Entraînement "} -{" "}
-              ⏱{formatDurationTime(session.duration)} - 📍{session.location} -{" "}
-               🕐{formatTime(session.time)}
-            </p>
-            <Button onClick={() => navigate(`/form/${session.id}`)}>edit</Button>
-          </div>
+            <DiarySession key={session.id} session={session} />
         )).reverse()}
       </div>
     </div>

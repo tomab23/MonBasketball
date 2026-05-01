@@ -41,7 +41,7 @@ export default function SessionFormPage() {
   const [buttonLoading, setButtonLoading] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams()
-  const { fetchSessionById, error, addSession, editSession, removeSession } =
+  const { fetchSessionById, error, addSession, editSession, removeSession, fetchSessions } =
     useSession()
   const { shoes = [] } = useShoes()
   const [session, setSession] = useState<Session | null>(null)
@@ -63,6 +63,7 @@ export default function SessionFormPage() {
 
   const handleDelete = (id: string) => {
     removeSession(id)
+    fetchSessions()
     navigate(-1)
   }
 
