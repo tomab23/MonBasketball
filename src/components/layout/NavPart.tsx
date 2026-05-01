@@ -17,7 +17,7 @@ const NavPart = () => {
           }
         >
           <HomeIcon className="w-6 h-6 max-sm:w-4 max-sm:h-4" />
-          <p className="max-sm:hidden">Home</p>
+          <p className="max-sm:hidden">Accueil</p>
         </NavLink>
 
         <NavLink
@@ -31,7 +31,7 @@ const NavPart = () => {
           }
         >
           <NotebookText className="w-6 h-6 max-sm:w-4 max-sm:h-4" />
-          <p className="max-sm:hidden">Diary</p>
+          <p className="max-sm:hidden">Journal</p>
         </NavLink>
         <NavLink
           to="/stats"
