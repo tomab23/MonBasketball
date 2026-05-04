@@ -5,11 +5,11 @@ import { stringToDate } from "@/helpers/StringToDate"
 import type Shoes from "@/models/Shoes"
 import { Separator } from "./ui/separator"
 import { PenIcon } from "lucide-react"
-import chaussure from '../assets/icons/chaussure.png'
+import chaussure from "../assets/icons/chaussure.png"
 
 interface ShoeCardProps {
   shoes: Shoes
-//   onSelect?: (shoe: Shoes) => void
+  //   onSelect?: (shoe: Shoes) => void
 }
 
 export function CardShoes({ shoes }: ShoeCardProps) {
@@ -17,9 +17,18 @@ export function CardShoes({ shoes }: ShoeCardProps) {
     <Card className="flex-row items-center justify-between overflow-hidden border-neutral-800 py-3 pr-2 transition-colors duration-200 hover:border-amber-500 dark:bg-neutral-900">
       <div className="flex gap-2">
         {/* IMAGE */}
-        <div className="flex items-center justify-center ml-1">
-          {/* <p className="text-6xl select-none max-sm:text-3xl">👟</p> */}
-          <img src={chaussure} alt="Icon chaussure par smashingstocks" title="Icon par smashingstocks" className="w-16 max-sm:w-10" />
+        <div className="ml-1 flex items-center justify-center">
+          <div className="flex h-16 w-16 items-center justify-center max-sm:h-10 max-sm:w-10">
+            <img
+              src={chaussure}
+              alt="Icon chaussure par smashingstocks"
+              title="Icon par smashingstocks"
+              className="block max-h-full max-w-full object-contain select-none"
+              draggable={false}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
         <Separator orientation="vertical" />
         <div className="flex flex-col gap-1">
