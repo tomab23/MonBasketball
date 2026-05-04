@@ -252,8 +252,8 @@ export default function SessionFormPage() {
                 <SelectContent>
                   <SelectGroup>
                     {shoes.map((shoes) => (
-                      <SelectItem key={shoes.id} value={shoes.name}>
-                        {shoes.name}
+                      <SelectItem key={shoes.id} value={`${shoes.name} - ${shoes.color}`}>
+                        {shoes.name} - {shoes.color}
                       </SelectItem>
                     ))}
                   </SelectGroup>

@@ -7,7 +7,7 @@ export const getSessions = async (userId: string) => {
     .from("session")
     .select("*")
     .eq("user_id", userId)
-    // .order('date', { ascending: false })
+    .order('date', { ascending: false })
   if (error) throw new Error(error.message);
   return data;
 };
