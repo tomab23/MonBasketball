@@ -55,7 +55,7 @@ const DialogAddShoe = ({ sessionForm }: Props) => {
           </Button>
         }
       />
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-sm" showCloseButton={false}>
         <form onSubmit={formik.handleSubmit}>
           <DialogHeader>
             <DialogTitle>Ajouter une chaussure</DialogTitle>

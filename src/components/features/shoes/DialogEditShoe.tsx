@@ -57,7 +57,7 @@ const DialogEditShoe = ({ shoe }: Props) => {
         }
       />
 
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-sm" showCloseButton={false}>
         <form onSubmit={formik.handleSubmit}>
           <DialogHeader>
             <DialogTitle>Modifier la "{shoe.name}"</DialogTitle>
