@@ -16,6 +16,7 @@ import { useFormik } from "formik"
 import { PenIcon, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { FormikInputShoe } from "./FormikInputShoe"
+import { BasketballIcon } from "@/assets/BasketballIcon"
 
 type Props = {
   shoe: Shoes
@@ -23,6 +24,7 @@ type Props = {
 
 const DialogEditShoe = ({ shoe }: Props) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik<ShoeFormValues>({
     initialValues: {
@@ -36,14 +38,14 @@ const DialogEditShoe = ({ shoe }: Props) => {
     enableReinitialize: true,
     validationSchema: ValidShoeSchema,
     onSubmit: (values) => {
+      setLoading(true)
       alert(JSON.stringify(values));
 
       setOpen(false);
+      setLoading(false);
       
     },
   })
-
-  // console.log(formik.errors);
   
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -88,7 +90,9 @@ const DialogEditShoe = ({ shoe }: Props) => {
               <Trash2 />
             </Button>
             <DialogClose render={<Button variant="outline" onClick={() => formik.resetForm()}>Annuler</Button>} />
-            <Button type="submit">Modifier la paire</Button>
+            <Button type="submit">
+              {loading ? <><BasketballIcon className="h-5 w-5 animate-spin" /> Modification...</> : "Modifier la paire"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
