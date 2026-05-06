@@ -1,11 +1,9 @@
-// components/ShoeCard.tsx
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { stringToDate } from "@/helpers/StringToDate"
 import type Shoes from "@/models/Shoes"
-import { Separator } from "./ui/separator"
-import { PenIcon } from "lucide-react"
-import chaussure from "../assets/icons/chaussure.png"
+import chaussure from "../../../assets/icons/chaussure.png"
+import { Separator } from "@/components/ui/separator"
+import DialogEditShoe from "./DialogEditShoe"
 
 interface ShoeCardProps {
   shoes: Shoes
@@ -81,9 +79,7 @@ export function CardShoes({ shoes }: ShoeCardProps) {
         </div>
       </div>
       {/* BUTTON */}
-      <Button className="max-sm:text-xs" variant={"secondary"}>
-        <PenIcon />
-      </Button>
+      <DialogEditShoe shoe={shoes} />
     </Card>
   )
 }

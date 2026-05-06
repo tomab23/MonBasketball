@@ -3,7 +3,7 @@ import { formatTime } from "@/helpers/FormatTime"
 import { stringToDate } from "@/helpers/StringToDate"
 import type Session from "@/models/Session"
 import { useNavigate } from "react-router-dom"
-import { Button } from "./ui/button"
+import { Button } from "../../ui/button"
 import { Dumbbell, NotebookText, Swords } from "lucide-react"
 
 type Props = {
