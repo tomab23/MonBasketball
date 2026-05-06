@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useShoes } from "@/hooks/useShoes"
+import DialogAddShoe from "@/components/features/shoes/DialogAddShoe"
 
 export default function SessionFormPage() {
   const [loading, setLoading] = useState(false)
@@ -226,9 +227,10 @@ export default function SessionFormPage() {
             <div className="space-y-2">
               <div className="-mb-0.5 flex items-center justify-between">
                 <Label>Chaussures</Label>
-                <Button variant={"link"} onClick={() => alert("new paire")}>
+                {/* <Button variant={"link"} onClick={() => alert("new paire")}>
                   Ajouter une paire
-                </Button>
+                </Button> */}
+                <DialogAddShoe sessionForm />
               </div>
               <Select
                 disabled={shoes.length === 0}
