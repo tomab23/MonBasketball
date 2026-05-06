@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 import Header from "@/components/layout/Header"
 import { Dumbbell, NotebookText, PlusCircle, Swords } from "lucide-react"
-import DiarySession from "@/components/DiarySession"
+import DiarySession from "@/components/features/sessions/DiarySession"
 
 const DiaryPage = () => {
   const { sessions } = useSession();

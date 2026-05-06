@@ -1,4 +1,5 @@
-import { CardShoes } from "@/components/CardShoes"
+
+import { CardShoes } from "@/components/features/shoes/CardShoes"
 import Header from "@/components/layout/Header"
 import { Button } from "@/components/ui/button"
 import { useShoes } from "@/hooks/useShoes"
