@@ -10,16 +10,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { FieldGroup } from "@/components/ui/field"
-import type Shoes from "@/models/Shoes"
 import { ValidShoeSchema, type ShoeFormValues } from "@/schemas/ShoeSchema"
 import { useFormik } from "formik"
 import { PenIcon, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { FormikInputShoe } from "./FormikInputShoe"
 import { BasketballIcon } from "@/assets/BasketballIcon"
+import type Shoe from "@/models/Shoe"
 
 type Props = {
-  shoe: Shoes
+  shoe: Shoe
 }
 
 const DialogEditShoe = ({ shoe }: Props) => {
@@ -71,7 +71,7 @@ const DialogEditShoe = ({ shoe }: Props) => {
             {/* COLOR */}
             <FormikInputShoe formik={formik} name={"color"} label="Couleur" placeholder="Mamba mentality"  />
             {/* BRAND / SIZE / PRICE */}
-            <div className="flex gap-3">
+            <div className="flex gap-2">
              <FormikInputShoe formik={formik} name={"brand"} label="Marque" placeholder="Nike" className="flex-1/6"  />
               <FormikInputShoe formik={formik} name={"size"} label="Taille" placeholder="45" type="number" className="flex-1"  />
               <FormikInputShoe price formik={formik} name={"price"} label="Prix" placeholder="120" type="number" className="flex-1/12"  />

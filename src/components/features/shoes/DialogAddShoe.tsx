@@ -69,7 +69,7 @@ const DialogAddShoe = ({ sessionForm }: Props) => {
             {/* COLOR */}
             <FormikInputShoe formik={formik} name={"color"} label="Couleur" placeholder="Mamba mentality"  />
             {/* BRAND / SIZE / PRICE */}
-            <div className="flex gap-3">
+            <div className="flex gap-2">
              <FormikInputShoe formik={formik} name={"brand"} label="Marque" placeholder="Nike" className="flex-1/6"  />
               <FormikInputShoe formik={formik} name={"size"} label="Taille" placeholder="45" type="number" className="flex-1"  />
               <FormikInputShoe price formik={formik} name={"price"} label="Prix" placeholder="120" type="number" className="flex-1/12"  />

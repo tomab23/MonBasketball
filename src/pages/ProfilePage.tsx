@@ -1,19 +1,19 @@
-import Header from "@/components/layout/Header";
+import Header from "@/components/layout/Header"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
-import { useShoes } from "@/hooks/useShoes";
-import { SportShoe } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useShoe } from "@/hooks/useShoe"
+import { SportShoe } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 const ProfilePage = () => {
-  const { logout, user } = useAuth();
-  const { shoes } = useShoes();
-  const navigate = useNavigate();
+  const { logout, user } = useAuth()
+  const { shoes } = useShoe()
+  const navigate = useNavigate()
 
-    const handleLogout = () => {
-    logout();
-  };
+  const handleLogout = () => {
+    logout()
+  }
 
   return (
     <div className="contenu">
@@ -27,15 +27,16 @@ const ProfilePage = () => {
         </Button>
       </Header>
 
-
-      <div className="flex items-center gap-2 mt-2">
+      <div className="mt-2 flex items-center gap-2">
         <p>{user?.email}</p>
-           <ModeToggle />
+        <ModeToggle />
       </div>
 
-      <div className="flex justify-between items-center mt-5" >
-        <p className="flex items-center">Mes chaussures ({shoes.length} <SportShoe className="w-4 h-4" />)</p>
-      <Button
+      <div className="mt-5 flex items-center justify-between">
+        <p className="flex items-center">
+          Mes chaussures ({shoes.length} <SportShoe className="h-4 w-4" />)
+        </p>
+        <Button
           className="max-sm:text-xs"
           variant={"secondary"}
           onClick={() => navigate("/shoes")}
@@ -43,7 +44,6 @@ const ProfilePage = () => {
           Voir mes chaussures
         </Button>
       </div>
-   
     </div>
   )
 }

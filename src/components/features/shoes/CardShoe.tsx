@@ -1,16 +1,16 @@
 import { Card } from "@/components/ui/card"
 import { stringToDate } from "@/helpers/StringToDate"
-import type Shoes from "@/models/Shoes"
+import type Shoe from "@/models/Shoe"
 import chaussure from "../../../assets/icons/chaussure.png"
 import { Separator } from "@/components/ui/separator"
 import DialogEditShoe from "./DialogEditShoe"
 
 interface ShoeCardProps {
-  shoes: Shoes
-  //   onSelect?: (shoe: Shoes) => void
+  shoe: Shoe
+  //   onSelect?: (shoe: Shoe) => void
 }
 
-export function CardShoes({ shoes }: ShoeCardProps) {
+export function CardShoe({ shoe }: ShoeCardProps) {
   return (
     <Card className="flex-row items-center justify-between overflow-hidden border-neutral-800 py-3 pr-2 transition-colors duration-200 hover:border-amber-500 dark:bg-neutral-900">
       <div className="flex gap-2">
@@ -33,37 +33,37 @@ export function CardShoes({ shoes }: ShoeCardProps) {
           {/* BRAND & NAME */}
           <div className="ml-1 flex items-center gap-2">
             <h3 className="truncate text-base leading-tight font-bold tracking-wide uppercase">
-              {shoes.name}
+              {shoe.name}
             </h3>
             <p className="text-xs font-medium tracking-widest text-primary uppercase dark:text-amber-400">
-              {shoes.brand}
+              {shoe.brand}
             </p>
           </div>
 
           {/* COLOR / SIZE / PRICE */}
           <div className="flex items-center gap-0.5">
-            {shoes.color && (
+            {shoe.color && (
               <span
                 className="w-fit max-w-40 truncate rounded-md border border-neutral-700 px-2 py-1 text-xs max-sm:max-w-28 dark:bg-neutral-800 dark:text-muted-foreground"
-                title={shoes.color}
+                title={shoe.color}
               >
-                <span className="font-medium">{shoes.color}</span>
+                <span className="font-medium">{shoe.color}</span>
               </span>
             )}
-            {shoes.size && (
+            {shoe.size && (
               <span className="rounded-md border border-neutral-700 px-2 py-1 text-xs dark:bg-neutral-800 dark:text-muted-foreground">
                 Taille{" "}
                 <span>
-                  <b>{shoes.size}</b>
+                  <b>{shoe.size}</b>
                 </span>
               </span>
             )}
-            {shoes.price && (
+            {shoe.price && (
               <span className="rounded-md border border-neutral-700 px-2 py-1 text-xs dark:bg-neutral-800 dark:text-muted-foreground">
                 <span className="">
                   {" "}
                   <b>
-                    {shoes.price.toLocaleString("fr-FR", {
+                    {shoe.price.toLocaleString("fr-FR", {
                       style: "currency",
                       currency: "EUR",
                       maximumFractionDigits: 0,
@@ -74,12 +74,12 @@ export function CardShoes({ shoes }: ShoeCardProps) {
             )}
           </div>
           <p className="ml-1 text-xs text-muted-foreground italic">
-            achat le {stringToDate(shoes.date_buy)}
+            achat le {stringToDate(shoe.date_buy)}
           </p>
         </div>
       </div>
       {/* BUTTON */}
-      <DialogEditShoe shoe={shoes} />
+      <DialogEditShoe shoe={shoe} />
     </Card>
   )
 }

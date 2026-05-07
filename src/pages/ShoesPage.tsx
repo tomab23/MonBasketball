@@ -1,22 +1,15 @@
-import { CardShoes } from "@/components/features/shoes/CardShoes"
+import { CardShoe } from "@/components/features/shoes/CardShoe"
 import DialogAddShoe from "@/components/features/shoes/DialogAddShoe"
 import Header from "@/components/layout/Header"
-import { useShoes } from "@/hooks/useShoes"
+import { useShoe } from "@/hooks/useShoe"
 import { Euro, SportShoe } from "lucide-react"
 
 const ShoesPage = () => {
-  const { shoes, totalPrice } = useShoes()
+  const { shoes, totalPrice } = useShoe()
 
   return (
     <div className="contenu">
       <Header title="Mes chaussures">
-        {/* <Button
-          className="max-sm:text-xs"
-          variant={"default"}
-          onClick={() => ""}
-        >
-          <PlusCircle /> Ajouter une paire
-        </Button> */}
         <DialogAddShoe />
       </Header>
 
@@ -33,8 +26,8 @@ const ShoesPage = () => {
       </div>
 
       <div className="mt-2 grid grid-cols-2 gap-4 max-sm:grid-cols-1 max-sm:gap-2">
-        {shoes.map((shoes) => (
-          <CardShoes shoes={shoes} key={shoes.id} />
+        {shoes.map((shoe) => (
+          <CardShoe shoe={shoe} key={shoe.id} />
         ))}
       </div>
     </div>

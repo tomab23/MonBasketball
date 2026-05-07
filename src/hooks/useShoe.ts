@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { parseSupabaseError, type ParsedError } from "@/utils/SupabaseError"
-import type Shoes from "@/models/Shoes"
+import type Shoes from "@/models/Shoe"
 import { getShoes, getTotalPrice } from "@/services/ShoesService"
 
-export const useShoes = () => {
+export const useShoe = () => {
   const { user } = useAuth()
   const [shoes, setShoes] = useState<Shoes[]>([])
   const [loading, setLoading] = useState(false)
