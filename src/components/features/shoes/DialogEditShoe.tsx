@@ -68,15 +68,13 @@ const DialogEditShoe = ({ shoe }: Props) => {
           <FieldGroup className="mt-5">
             {/* NAME */}
             <FormikInputShoe formik={formik} name={"name"} label="Nom*" placeholder="Nike Kyrie 3"  />
-            {/* COLOR / BRAND */}
+            {/* COLOR */}
+            <FormikInputShoe formik={formik} name={"color"} label="Couleur" placeholder="Mamba mentality"  />
+            {/* BRAND / SIZE / PRICE */}
             <div className="flex gap-3">
-              <FormikInputShoe formik={formik} name={"color"} label="Couleur" placeholder="Mamba mentality"  />
-              <FormikInputShoe formik={formik} name={"brand"} label="Marque" placeholder="Nike"  />
-            </div>
-            {/* SIZE / PRICE */}
-            <div className="flex gap-3">
-              <FormikInputShoe formik={formik} name={"size"} label="Taille" placeholder="45" type="number"  />
-              <FormikInputShoe price formik={formik} name={"price"} label="Prix" placeholder="120" type="number"  />
+             <FormikInputShoe formik={formik} name={"brand"} label="Marque" placeholder="Nike" className="flex-1/6"  />
+              <FormikInputShoe formik={formik} name={"size"} label="Taille" placeholder="45" type="number" className="flex-1"  />
+              <FormikInputShoe price formik={formik} name={"price"} label="Prix" placeholder="120" type="number" className="flex-1/12"  />
             </div>
             {/* DATE BUY */}
             <FormikInputShoe type="date" formik={formik} name={"date"} label="Date d'achat" />
@@ -84,7 +82,7 @@ const DialogEditShoe = ({ shoe }: Props) => {
           <DialogFooter className="mt-5">
             <Button
               type="button"
-              className="max-sm:text-xs sm:mr-16"
+              className="max-sm:text-xs sm:mr-16 w-fit"
               variant={"destructive"}
             >
               <Trash2 />
