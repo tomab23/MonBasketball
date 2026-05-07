@@ -17,36 +17,51 @@ import { useState } from "react"
 import { FormikInputShoe } from "./FormikInputShoe"
 import { BasketballIcon } from "@/assets/BasketballIcon"
 import type Shoe from "@/models/Shoe"
+import { useShoe } from "@/hooks/useShoe"
 
 type Props = {
   shoe: Shoe
 }
 
 const DialogEditShoe = ({ shoe }: Props) => {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { editShoe } = useShoe()
 
   const formik = useFormik<ShoeFormValues>({
     initialValues: {
       name: shoe.name,
-      color: shoe.color,
       brand: shoe.brand,
       size: shoe.size,
       price: shoe.price,
       date: shoe.date_buy,
+      color: shoe.color,
     },
     enableReinitialize: true,
     validationSchema: ValidShoeSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setLoading(true)
-      alert(JSON.stringify(values));
-
-      setOpen(false);
-      setLoading(false);
-      
+      try {
+        await editShoe(
+          shoe.id,
+          values.name,
+          values.brand,
+          values.size,
+          values.price,
+          values.date,
+          values.color
+        )
+        setOpen(false) // ne se ferme qu'en cas de succès
+      } catch (err) {
+        // TODO Dialog edit shoe Error
+        // l'erreur est déjà gérée dans le hook (setError)
+        // tu peux ajouter un log ou un toast ici si besoin
+        console.error(err)
+      }
+      setLoading(false)
     },
   })
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
@@ -67,29 +82,78 @@ const DialogEditShoe = ({ shoe }: Props) => {
           </DialogHeader>
           <FieldGroup className="mt-5">
             {/* NAME */}
-            <FormikInputShoe formik={formik} name={"name"} label="Nom*" placeholder="Nike Kyrie 3"  />
+            <FormikInputShoe
+              formik={formik}
+              name={"name"}
+              label="Nom*"
+              placeholder="Nike Kyrie 3"
+            />
             {/* COLOR */}
-            <FormikInputShoe formik={formik} name={"color"} label="Couleur" placeholder="Mamba mentality"  />
+            <FormikInputShoe
+              formik={formik}
+              name={"color"}
+              label="Couleur"
+              placeholder="Mamba mentality"
+            />
             {/* BRAND / SIZE / PRICE */}
             <div className="flex gap-2">
-             <FormikInputShoe formik={formik} name={"brand"} label="Marque" placeholder="Nike" className="flex-1/6"  />
-              <FormikInputShoe formik={formik} name={"size"} label="Taille" placeholder="45" type="number" className="flex-1"  />
-              <FormikInputShoe price formik={formik} name={"price"} label="Prix" placeholder="120" type="number" className="flex-1/12"  />
+              <FormikInputShoe
+                formik={formik}
+                name={"brand"}
+                label="Marque"
+                placeholder="Nike"
+                className="flex-1/6"
+              />
+              <FormikInputShoe
+                formik={formik}
+                name={"size"}
+                label="Taille"
+                placeholder="45"
+                type="number"
+                className="flex-1"
+              />
+              <FormikInputShoe
+                price
+                formik={formik}
+                name={"price"}
+                label="Prix"
+                placeholder="120"
+                type="number"
+                className="flex-1/12"
+              />
             </div>
             {/* DATE BUY */}
-            <FormikInputShoe type="date" formik={formik} name={"date"} label="Date d'achat" />
+            <FormikInputShoe
+              type="date"
+              formik={formik}
+              name={"date"}
+              label="Date d'achat"
+            />
           </FieldGroup>
           <DialogFooter className="mt-5">
             <Button
               type="button"
-              className="max-sm:text-xs sm:mr-16 w-fit"
+              className="w-fit max-sm:text-xs sm:mr-16"
               variant={"destructive"}
             >
               <Trash2 />
             </Button>
-            <DialogClose render={<Button variant="outline" onClick={() => formik.resetForm()}>Annuler</Button>} />
+            <DialogClose
+              render={
+                <Button variant="outline" onClick={() => formik.resetForm()}>
+                  Annuler
+                </Button>
+              }
+            />
             <Button type="submit">
-              {loading ? <><BasketballIcon className="h-5 w-5 animate-spin" /> Modification...</> : "Modifier la paire"}
+              {loading ? (
+                <>
+                  <BasketballIcon className="h-5 w-5 animate-spin" />{" "}
+                  Modification...
+                </>
+              ) : (
+                "Modifier la paire"
+              )}
             </Button>
           </DialogFooter>
         </form>

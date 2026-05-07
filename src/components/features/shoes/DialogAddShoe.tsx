@@ -16,6 +16,7 @@ import { PlusCircle } from "lucide-react"
 import { FormikInputShoe } from "./FormikInputShoe"
 import { useState } from "react"
 import { BasketballIcon } from "@/assets/BasketballIcon"
+import { useShoe } from "@/hooks/useShoe"
 
 type Props = {
   sessionForm?: boolean
@@ -23,6 +24,7 @@ type Props = {
 const DialogAddShoe = ({ sessionForm }: Props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { addShoe } = useShoe();
   const formik = useFormik<ShoeFormValues>({
     initialValues: {
       name: "",
@@ -34,13 +36,26 @@ const DialogAddShoe = ({ sessionForm }: Props) => {
     },
     enableReinitialize: true,
     validationSchema: ValidShoeSchema,
-    onSubmit: (values, { resetForm}) => {
+    onSubmit: async (values, { resetForm}) => {
       setLoading(true)
-      alert(JSON.stringify(values))
-
-      setOpen(false);
+      try {
+        await addShoe(
+          values.name,
+          values.brand,
+          values.size,
+          values.price,
+          values.date,
+          values.color
+        )
+        setOpen(false) // ne se ferme qu'en cas de succès
+      } catch (err) {
+        // TODO Dialog edit shoe Error
+        // l'erreur est déjà gérée dans le hook (setError)
+        // tu peux ajouter un log ou un toast ici si besoin
+        console.error(err)
+      }
+      setLoading(false)
       resetForm()
-      setLoading(false);
     },
   })
   return (

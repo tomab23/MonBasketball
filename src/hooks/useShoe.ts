@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { parseSupabaseError, type ParsedError } from "@/utils/SupabaseError"
 import type Shoes from "@/models/Shoe"
-import { getShoes, getTotalPrice } from "@/services/ShoesService"
+import { deleteShoeById, getShoes, getTotalPrice, insertShoe, updateShoe } from "@/services/ShoesService"
 
 export const useShoe = () => {
   const { user } = useAuth()
@@ -26,68 +26,58 @@ export const useShoe = () => {
   }, [user])
 
   // ajouter une paire
-  // const addSession = async (
-  //   date: string,
-  //   time: string,
-  //   duration: number,
-  //   location: string,
-  //   type: string,
-  //   note: string
-  //   ) => {
-  //   if (!user) return
-  //   setLoading(true)
-  //   try {
-  //     await insertSession(user.id, date, time, duration,location, type, note)
-  //     await fetchSessions()
-  //   } catch (err) {
-  //     setError(parseSupabaseError(err))
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  //   }
+  const addShoe = async (
+  name: string,
+  brand: string | null,
+  size: number | null,
+  price: number | null,
+  date_buy: string | null,
+  color: string | null
+    ) => {
+    if (!user) return
+    setLoading(true)
+    try {
+      await insertShoe(user.id, name, brand, size, price, date_buy, color)
+      await fetchShoes()
+    } catch (err) {
+      setError(parseSupabaseError(err))
+    } finally {
+      setLoading(false)
+    }
+    }
 
   //  mettre a jour une paire
-  //   const editSession = useCallback(
-  //     async (id: string,
-  //   date: string,
-  //   time: string,
-  //   duration: number,
-  //   location: string,
-  //   type: string,
-  //   note: string
-  // ) => {
-  //       if (!user) return
-  //   setLoading(true)
-  //   try {
-  //     await updateSession(id,user.id, date, time, duration,location, type, note)
-  //     await fetchSessions()
-  //   } catch (err) {
-  //     setError(parseSupabaseError(err))
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  //     },
-  //     [user, fetchSessions]
-  //   )
+    const editShoe = useCallback(
+      async (id: string,
+  name: string,
+  brand: string | null,
+  size: number | null,
+  price: number | null,
+  date_buy: string | null,
+  color: string | null
+  ) => {
+        if (!user) return
+    setLoading(true)
+    try {
+      await updateShoe(id,user.id, name, brand, size, price, date_buy, color)
+      await fetchShoes()
+    } catch (err) {
+      setError(parseSupabaseError(err))
+    } finally {
+      setLoading(false)
+    }
+      },
+      [user, fetchShoes]
+    )
 
-  //   supprimer une paire
-  //   const removeSession = async (id: string) => {
-  //     if (!user) return
-  //     await deleteSessionById(id, user.id)
-  //     setSessions((prev) => prev.filter((c) => c.id !== id))
-  //   }
+    // supprimer une paire
+    const removeShoe = async (id: string) => {
+      if (!user) return
+      await deleteShoeById(id, user.id)
+      setShoes((prev) => prev.filter((c) => c.id !== id))
+    }
 
-  //   Récupérer une paire par id
-  // const fetchSessionById = useCallback(async (id: string): Promise<Session | null> => {
-  //   if (!user) return null;
-  //   try {
-  //     return await getSessionById(id, user.id);
-  //   } catch (err) {
-  //     const message = parseSupabaseError(err);
-  //     setError(message); // ← string lisible pour l'UI
-  //     return null;
-  //   }
-  // }, [user]);
+
 
 //   Charge le total du prix des chaussures
   useEffect(() => {
@@ -121,5 +111,8 @@ export const useShoe = () => {
     fetchShoes,
     totalPrice,
     error,
+    addShoe,
+    editShoe,
+    removeShoe
   }
 }
