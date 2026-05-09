@@ -28,13 +28,8 @@ const EnjuryCard = ({ enjury }: Props) => {
         <div className="flex items-center justify-between gap-1">
           <p className="flex items-center gap-2 max-sm:gap-1">
             <Bandage className="max-sm:h-4 max-sm:w-4" />{" "}
-            <span className="w-64 max-sm:w-44 truncate max-sm:text-xs">{enjury.title}</span>
+            <span className="truncate max-sm:text-xs">{enjury.title}</span>
           </p>
-          <span title={enjury.note ?? ""}>
-            <Notebook
-              className={`h-5 w-5 max-sm:h-4 max-sm:w-4 ${enjury.note ?? "text-muted-foreground"}`}
-            />
-          </span>
         </div>
 
         <div className="flex items-center gap-5">
@@ -50,7 +45,12 @@ const EnjuryCard = ({ enjury }: Props) => {
         </div>
       </div>
 
-      <div className="flex w-24 items-center justify-end gap-2">
+      <div className="flex w-24 items-center justify-end gap-3 max-sm:gap-2">
+        <span title={enjury.note ?? ""}>
+          <Notebook
+            className={`h-5 w-5 max-sm:h-4 max-sm:w-4 ${enjury.note ?? "text-muted-foreground"}`}
+          />
+        </span>
         {!enjury.date_end && (
           <Button title="Fin de blessure date du jour" size={"icon"}>
             <ClipboardCheck className="h-10 w-10" />
