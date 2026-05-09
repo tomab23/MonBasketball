@@ -44,6 +44,11 @@ const ProfilePage = () => {
           Voir mes chaussures
         </Button>
       </div>
+
+      <div className="mt-10 flex items-center gap-3">
+        <p>Vous avez eu 0 blessures</p>
+        <Button variant={"secondary"} onClick={() => navigate("/enjury")}>Voir mes blessures</Button>
+      </div>
     </div>
   )
 }
