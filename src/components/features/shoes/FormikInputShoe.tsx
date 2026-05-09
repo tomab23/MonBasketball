@@ -27,13 +27,14 @@ export function FormikInputShoe({
   type = "text",
   placeholder,
   price,
+  className
 }: Props) {
   //   const error = formik.touched[name] && formik.errors[name];
 
   const showError = formik.submitCount > 0 && formik.errors[name]
 
   return (
-    <Field className="gap-2">
+    <Field className={`gap-2 ${className}`}>
       <Label htmlFor={name}>{label}</Label>
 
       {!price ? (

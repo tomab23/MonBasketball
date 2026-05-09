@@ -16,6 +16,7 @@ import { PlusCircle } from "lucide-react"
 import { FormikInputShoe } from "./FormikInputShoe"
 import { useState } from "react"
 import { BasketballIcon } from "@/assets/BasketballIcon"
+import { useShoe } from "@/hooks/useShoe"
 
 type Props = {
   sessionForm?: boolean
@@ -23,6 +24,7 @@ type Props = {
 const DialogAddShoe = ({ sessionForm }: Props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { addShoe } = useShoe();
   const formik = useFormik<ShoeFormValues>({
     initialValues: {
       name: "",
@@ -34,13 +36,26 @@ const DialogAddShoe = ({ sessionForm }: Props) => {
     },
     enableReinitialize: true,
     validationSchema: ValidShoeSchema,
-    onSubmit: (values, { resetForm}) => {
+    onSubmit: async (values, { resetForm}) => {
       setLoading(true)
-      alert(JSON.stringify(values))
-
-      setOpen(false);
+      try {
+        await addShoe(
+          values.name,
+          values.brand,
+          values.size,
+          values.price,
+          values.date,
+          values.color
+        )
+        setOpen(false) // ne se ferme qu'en cas de succès
+      } catch (err) {
+        // TODO Dialog edit shoe Error
+        // l'erreur est déjà gérée dans le hook (setError)
+        // tu peux ajouter un log ou un toast ici si besoin
+        console.error(err)
+      }
+      setLoading(false)
       resetForm()
-      setLoading(false);
     },
   })
   return (
@@ -55,7 +70,7 @@ const DialogAddShoe = ({ sessionForm }: Props) => {
           </Button>
         }
       />
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-sm" showCloseButton={false}>
         <form onSubmit={formik.handleSubmit}>
           <DialogHeader>
             <DialogTitle>Ajouter une chaussure</DialogTitle>
@@ -66,15 +81,13 @@ const DialogAddShoe = ({ sessionForm }: Props) => {
           <FieldGroup className="mt-5">
             {/* NAME */}
             <FormikInputShoe formik={formik} name={"name"} label="Nom*" placeholder="Nike Kyrie 3"  />
-            {/* COLOR / BRAND */}
-            <div className="flex gap-3">
-              <FormikInputShoe formik={formik} name={"color"} label="Couleur" placeholder="Mamba mentality"  />
-              <FormikInputShoe formik={formik} name={"brand"} label="Marque" placeholder="Nike"  />
-            </div>
-            {/* SIZE / PRICE */}
-            <div className="flex gap-3">
-              <FormikInputShoe formik={formik} name={"size"} label="Taille" placeholder="45" type="number"  />
-              <FormikInputShoe price formik={formik} name={"price"} label="Prix" placeholder="120" type="number"  />
+            {/* COLOR */}
+            <FormikInputShoe formik={formik} name={"color"} label="Couleur" placeholder="Mamba mentality"  />
+            {/* BRAND / SIZE / PRICE */}
+            <div className="flex gap-2">
+             <FormikInputShoe formik={formik} name={"brand"} label="Marque" placeholder="Nike" className="flex-1/6"  />
+              <FormikInputShoe formik={formik} name={"size"} label="Taille" placeholder="45" type="number" className="flex-1"  />
+              <FormikInputShoe price formik={formik} name={"price"} label="Prix" placeholder="120" type="number" className="flex-1/12"  />
             </div>
             {/* DATE BUY */}
             <FormikInputShoe type="date" formik={formik} name={"date"} label="Date d'achat" />

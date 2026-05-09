@@ -1,9 +1,5 @@
 import * as Yup from "yup"
 
-// TODO valid shoe form
-
-    // .nullable() // accepte null (venant de la BDD)
-    // .default(""),
 
 export const ValidShoeSchema = Yup.object({
   name: Yup.string().required("Le nom est obligatoire"),
@@ -16,12 +12,16 @@ export const ValidShoeSchema = Yup.object({
     .typeError("La taille doit être un nombre")
     .positive("La taille doit être positive")
     .min(1, "Minimum 1")
-    .max(60, "Maximum 60").nullable(),
+    .max(60, "Maximum 60")
+    .nullable()
+    .defined(),
 
   price: Yup.number()
     .typeError("Le prix doit être un nombre")
     .positive("Le prix doit être positive")
-    .min(1, "Minimum 1").nullable(),
+    .min(1, "Minimum 1")
+    .nullable()
+    .defined(),
     // .max(3000, "Maximum 10h"),
 
     date: Yup.string().nullable().default(""),

@@ -1,4 +1,4 @@
-export default class Shoes {
+export default class Shoe {
   id: string
   created_at: string
   name: string

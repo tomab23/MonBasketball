@@ -34,17 +34,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useShoes } from "@/hooks/useShoes"
 import DialogAddShoe from "@/components/features/shoes/DialogAddShoe"
+import { useShoe } from "@/hooks/useShoe"
 
 export default function SessionFormPage() {
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams()
-  const { fetchSessionById, error, addSession, editSession, removeSession, fetchSessions } =
-    useSession()
-  const { shoes = [] } = useShoes()
+  const { fetchSessionById, error, addSession, editSession, removeSession, fetchSessions } = useSession()
+  const { shoes = [] } = useShoe()
   const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
@@ -111,11 +110,6 @@ export default function SessionFormPage() {
       if (!error) {
         navigate(-1)
       }
-      // setLoading(true)
-      // setTimeout(() => {
-      //   setLoading(false)
-      //   navigate("/home")
-      // }, 1000)
     },
   })
 
