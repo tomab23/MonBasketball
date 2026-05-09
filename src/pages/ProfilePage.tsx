@@ -2,6 +2,7 @@ import Header from "@/components/layout/Header"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
+import { useEnjury } from "@/hooks/useEnjury"
 import { useShoe } from "@/hooks/useShoe"
 import { SportShoe } from "lucide-react"
 import { useNavigate } from "react-router-dom"
@@ -9,6 +10,7 @@ import { useNavigate } from "react-router-dom"
 const ProfilePage = () => {
   const { logout, user } = useAuth()
   const { shoes } = useShoe()
+   const { enjuryNumber } = useEnjury()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -46,7 +48,7 @@ const ProfilePage = () => {
       </div>
 
       <div className="mt-10 flex items-center gap-3">
-        <p>Vous avez eu 0 blessures</p>
+        <p>Vous avez eu {enjuryNumber} blessure{enjuryNumber > 1 && "s"}</p>
         <Button variant={"secondary"} onClick={() => navigate("/enjury")}>Voir mes blessures</Button>
       </div>
     </div>

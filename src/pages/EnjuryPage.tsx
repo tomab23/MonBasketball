@@ -31,7 +31,7 @@ const EnjuryPage = () => {
           />
         </div>
 
-        <p>Filter</p>
+        <p>Filtre années</p>
       </div>
 
       <div className="mt-5 flex flex-col items-center gap-3 max-sm:mt-5">
