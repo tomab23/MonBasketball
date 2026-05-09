@@ -17,7 +17,7 @@ type Props = {
 }
 const EnjuryCard = ({ enjury }: Props) => {
   return (
-    <Card className="flex w-fit flex-row items-center justify-between px-5 max-sm:px-4 max-sm:gap-6">
+    <Card className="flex w-fit flex-row items-center justify-between px-5 max-sm:px-3 max-sm:gap-5">
       <div>
         <BriefcaseMedical
           className={`h-10 w-10 max-sm:h-8 max-sm:w-8 ${!enjury.date_end ? "text-destructive" : "text-green-600"}`}
