@@ -11,6 +11,7 @@ import StatsPage from "@/pages/StatsPage"
 import { Route, Routes, useLocation } from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
 import ShoesPage from "@/pages/ShoesPage"
+import EnjuryPage from "@/pages/EnjuryPage"
 
 const RouterApp = () => {
   const location = useLocation()
@@ -28,6 +29,7 @@ const RouterApp = () => {
         <Route path="/diary" element={<PrivateRoute><DiaryPage /></PrivateRoute>} />
         <Route path="/stats" element={<PrivateRoute><StatsPage /></PrivateRoute>} />
         <Route path="/shoes" element={<PrivateRoute><ShoesPage /></PrivateRoute>} />
+        <Route path="/enjury" element={<PrivateRoute><EnjuryPage /></PrivateRoute>} />
       </Route>
       <Route path="/form" element={<PrivateRoute><SessionFormPage /></PrivateRoute>} />
       <Route path="/form/:id" element={<PrivateRoute><SessionFormPage /></PrivateRoute>} />
