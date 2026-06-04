@@ -1,4 +1,5 @@
 import EnjuryCard from "@/components/features/enjurys/EnjuryCard"
+import EnjuryInfo from "@/components/features/enjurys/EnjuryInfo"
 import Header from "@/components/layout/Header"
 import { Button } from "@/components/ui/button"
 import { useEnjury } from "@/hooks/useEnjury"
@@ -37,6 +38,14 @@ const EnjuryPage = () => {
       <div className="mt-5 flex flex-col items-center gap-3 max-sm:mt-5">
         {enjurys.map((enjury) => (
             <EnjuryCard key={enjury.id} enjury={enjury} />
+        ))}
+      </div>
+
+      <br /><br />
+
+            <div className="mt-5 flex flex-col items-center gap-3 max-sm:mt-5">
+        {enjurys.map((enjury) => (
+            <EnjuryInfo key={enjury.id} enjury={enjury} />
         ))}
       </div>
     </div>
